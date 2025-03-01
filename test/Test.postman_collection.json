@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "1911a2df-5f44-4b73-b69c-521bf6b236d8",
+		"name": "ResumeBuilder Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31092440"
+	},
+	"item": [
+		{
+			"name": "User Routes",
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomUserName}}\",\r\n  \"phno\": \"1234567890\",\r\n  \"password\":\"12345678\",\r\n  \r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"city\": \"{{$randomCity}}\",\r\n  \"linkdin\": \"{{$randomUrl}}\",\r\n  \"github\": \"https://github.com/shatwik7\",\r\n  \"education\": [\r\n    {\r\n      \"college_name\": \"Harvard University\",\r\n      \"major\": \"Computer Science\",\r\n      \"starting\": \"09/2015\",\r\n      \"ending\": \"06/2019\",\r\n      \"gpa\": 3.8\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/signup",
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Update data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/users/67b9a0f26c0a386eca1d2e54",
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/67b9a0f26c0a386eca1d2e54",
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiNjdiYjliOTY1MDg0N2UzZGUwNjhiMDAxIiwiaWF0IjoxNzQwNTExNjg3LCJleHAiOjE3NDA1MTUyODd9.7ZM88Zl-89ElPQj1f0jJ9Z5DrXh8uA6wUgEHVTT9CoA"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/me"
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"1234567890\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/signin"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Template Routes",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/templates/"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ejsFile",
+									"type": "file",
+									"src": "/D:/Collage Android Project/template/twoRow.ejs"
+								},
+								{
+									"key": "imageFile",
+									"type": "file",
+									"src": "/D:/Collage Android Project/template/SingleRow.jpeg"
+								},
+								{
+									"key": "title",
+									"value": "TwoColoum3",
+									"type": "text"
+								},
+								{
+									"key": "file_name",
+									"value": "twocoloumn4",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/templates/"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete One",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/templates/67b8c298a389a4445e3ad4da"
+					},
+					"response": []
+				},
+				{
+					"name": "Update One",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ejsFile",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/templates/67b9b6104abe41674c9ae31b"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resume",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiNjdjMzEwZDAxNDBhZmE2MDY0ZjU3NjE5IiwiaWF0IjoxNzQwODM3MDcyLCJleHAiOjE3NDA4NDA2NzJ9.7A2IwbG0nlzgushW9WpKQnzbkZuHZYxxh1Tx6CEDilw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"selected_repo\":[\r\n        \"goLearning\",\r\n        \"bankApi\",\"Agribazar\"\r\n    ],\r\n    \"template_id\": \"67c30316c9d150aea97a67b7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/resumes",
+						"description": "Create the resume for the user --> return the resume data"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiNjdjMzEwZDAxNDBhZmE2MDY0ZjU3NjE5IiwiaWF0IjoxNzQwODM3MDcyLCJleHAiOjE3NDA4NDA2NzJ9.7A2IwbG0nlzgushW9WpKQnzbkZuHZYxxh1Tx6CEDilw"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/resumes",
+						"description": "get the resume it also has filr url with propert name of \"url\""
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}

@@ -6,13 +6,26 @@ import paymentRoutes from "./routes/payment.routes.ts";
 import { zodErrorHandler } from "./helper/zod.ts";
 import cookieParser from "npm:cookie-parser";
 import webhookRoutes from "./routes/webooks.routes.ts";
+import cors from 'npm:cors';
+
 const app = express();
 
+app.use((req:Request,_res:Response,next:NextFunction)=>{
+  console.log(new Date().toISOString()," ",req.method," ",req.url);
+  next();
+});
+app.use(cors({
+  origin: Deno.env.get("FRONTEND_URL"), // Allow frontend origin
+  credentials: true, // Allow cookies/auth headers
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow custom headers
+  methods: ['GET', 'POST', 'PUT', 'DELETE'] // Allowed methods
+}));
 app.use(express.json());
-app.use(cookieParser("your-secret-key"));
+app.use(cookieParser(Deno.env.get("SECRET_TOKEN")));
+
+
 
 app.use("/api/templates", templateRoutes);
-// app.use("/api/users", userRoutes);
 app.use("/api/",userRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/payments", paymentRoutes);

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "npm:express";
 import Template from "../models/template.model.ts";
 import { uploadToS3,deleteFromS3 } from "../util/s3.helper.ts";
+import { convertS3Link } from "../helper/helper.ts";
 
 export const createTemplate = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -24,7 +25,7 @@ export const createTemplate = async (req: Request, res: Response, next: NextFunc
       title: req.body.title,
       file_name: ejsFile.originalname,
       url: ejsUrl,
-      image_url: imageUrl,
+      image_url: convertS3Link(imageUrl),
     });
 
     const savedTemplate = await template.save();
@@ -86,11 +87,10 @@ export const updateTemplate = async (req: Request, res: Response, next: NextFunc
     // Update MongoDB
     const updatedTemplate = await Template.findByIdAndUpdate(
       req.params.id,
-      { title, url: ejsUrl, image_url: imageUrl },
+      { title, url: ejsUrl, image_url: convertS3Link(imageUrl) },
       { new: true, runValidators: true }
     );
-
-    res.json(updatedTemplate);
+    res.status(200).json(updatedTemplate);
   } catch (error) {
     console.error("❌ Error updating template:", error);
     next(error);

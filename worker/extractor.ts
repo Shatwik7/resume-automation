@@ -48,7 +48,7 @@ class DetailExtractor {
       console.log("✅ Repo details fetched!");
 
       console.log("🤖 Sending to Gemini AI...");
-      let project = await this.parseWithGemini(repoContents);
+      const project = await this.parseWithGemini(repoContents);
       console.log("project :: ",project);
       project.link = `https://github.com/${owner}/${repo}`;
 

@@ -5,5 +5,4 @@ export const templateSchema = z.object({
   file_name: z.string().min(1, "File name is required"),
   url: z.string().url("Invalid URL"),
   image_url: z.string().url("Invalid image URL"),
-  status: z.enum(["pending", "processing", "completed", "failed"]).default("pending"),
 });

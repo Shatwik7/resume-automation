@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= resume.name %> | Resume</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #3b82f6;
+            --accent: #f43f5e;
+            --text: #334155;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .resume {
+            max-width: 1000px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .resume::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            z-index: 10;
+        }
+        
+        .sidebar {
+            background-color: var(--primary);
+            color: white;
+            padding: 40px 30px;
+            position: relative;
+        }
+        
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile {
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .profile::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .profile h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .profile p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+        
+        .sidebar-section h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .contact-list {
+            list-style: none;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .contact-icon {
+            width: 20px;
+            margin-right: 10px;
+            color: var(--accent);
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .contact-text {
+            font-size: 14px;
+        }
+        
+        .contact-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .contact-link:hover {
+            color: var(--secondary);
+        }
+        
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .skill {
+            background-color: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        
+        .skill:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .main {
+            background-color: var(--card);
+            padding: 40px;
+        }
+        
+        .main-section {
+            margin-bottom: 35px;
+        }
+        
+        .main-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: var(--border);
+            margin-left: 15px;
+        }
+        
+        .summary {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .project {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--secondary);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .project:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .project:hover::before {
+            opacity: 1;
+        }
+        
+        .project-header {
+            margin-bottom: 12px;
+        }
+        
+        .project-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .project-tech {
+            display: inline-block;
+            font-size: 12px;
+            color: var(--text-light);
+            background-color: var(--bg);
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
+        
+        .project-description {
+            list-style: none;
+            margin-bottom: 12px;
+        }
+        
+        .project-description li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        
+        .project-description li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .project-link {
+            font-size: 13px;
+        }
+        
+        .project-link a {
+            color: var(--secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        
+        .project-link a:hover {
+            color: var(--accent);
+        }
+        
+        .project-link-icon {
+            margin-right: 5px;
+        }
+        
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .education {
+            background-color: var(--bg);
+            border-radius: 4px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .education:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .education-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .education-major {
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        
+        .education-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-light);
+            background-color: rgba(100, 116, 139, 0.1);
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        
+        .education-period {
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .resume {
+                grid-template-columns: 1fr;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .sidebar::after {
+                display: none;
+            }
+            
+            .education-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume">
+        <div class="sidebar">
+            <div class="profile">
+                <h1><%= resume.name %></h1>
+                <p><%= resume.city %></p>
+            </div>
+            
+            <div class="sidebar-section">
+                <h2>Contact</h2>
+                <ul class="contact-list">
+                    <li class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-text"><%= resume.phno %></div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-text"><%= resume.email %></div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="contact-icon">🔗</div>
+                        <div class="contact-text">
+                            <a href="<%= resume.linkdin %>" class="contact-link">LinkedIn</a>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="contact-icon">💻</div>
+                        <div class="contact-text">
+                            <a href="<%= resume.github %>" class="contact-link">GitHub</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h2>Skills</h2>
+                <div class="skills-grid">
+                    <% resume.skills.forEach(skill => { %>
+                        <div class="skill"><%= skill %></div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div class="main-section">
+                <h2 class="section-title">Professional Summary</h2>
+                <p class="summary"><%= resume.summary %></p>
+            </div>
+            
+            <div class="main-section">
+                <h2 class="section-title">Projects</h2>
+                <div class="projects-grid">
+                    <% resume.projects.forEach(project => { %>
+                        <div class="project">
+                            <div class="project-header">
+                                <h3 class="project-title"><%= project.title %></h3>
+                                <span class="project-tech"><%= project.tech_stack %></span>
+                            </div>
+                            <ul class="project-description">
+                                <% project.description.split(".").forEach(desc => { if(desc.trim()) { %>
+                                    <li><%= desc.trim() %>.</li>
+                                <% } }) %>
+                            </ul>
+                            <div class="project-link">
+                                <a href="<%= project.link %>">
+                                    <span class="project-link-icon">🔗</span>
+                                    View Project
+                                </a>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+            
+            <div class="main-section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-grid">
+                    <% resume.education.forEach(edu => { %>
+                        <div class="education">
+                            <h3 class="education-name"><%= edu.college_name %></h3>
+                            <p class="education-major"><%= edu.major %></p>
+                            <div class="education-details">
+                                <span class="education-period"><%= edu.starting %> - <%= edu.ending %></span>
+                                <span class="education-gpa">GPA: <%= edu.gpa %></span>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

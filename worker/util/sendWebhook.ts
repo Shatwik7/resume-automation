@@ -1,5 +1,5 @@
 export async function sendWebhook(resumeId:string,status:string,url:string|null,distUrl:string) {
-    await fetch(distUrl, {
+    const response=await fetch(distUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -7,4 +7,5 @@ export async function sendWebhook(resumeId:string,status:string,url:string|null,
         },
         body: JSON.stringify({resumeId,status,url}),
       });
+      console.log("Response From Server :",response.status);
   }

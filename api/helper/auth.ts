@@ -29,7 +29,6 @@ export const authorization = (req: Request, res: Response, next: NextFunction) =
     }
     try {
         const data =jwt.verify(token, secretKey);
-        console.log(data);
         req.userId = data.payload; 
         next();
     } catch (_error) {

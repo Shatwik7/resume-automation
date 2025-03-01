@@ -92,7 +92,7 @@ async function generatePDFBuffer(htmlContent: string): Promise<Uint8Array> {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.setContent(htmlContent, { waitUntil: "load" });
-  const pdfBuffer = await page.pdf();
+  const pdfBuffer = await page.pdf({ printBackground: true});
   await browser.close();
   return pdfBuffer;
 }

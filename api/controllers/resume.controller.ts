@@ -4,6 +4,7 @@ import Queue from "../redis.ts";
 import User from "../models/user.model.ts";
 import { resumeCreateSchema } from "../schemas/resume.schema.ts";
 import Template from "../models/template.model.ts";
+import { deleteFromS3 } from "../util/s3.helper.ts";
 
 const SERVER_URL = Deno.env.get("SERVER_URL") || "http://localhost:3000";
 
@@ -35,11 +36,11 @@ export const createResume = async (req: Request, res: Response,
   }
 };
 
-export const getResumes = async (_req: Request, res: Response, next: NextFunction) => {
+export const getResumes = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    
-    const resumes = await Resume.find();
-    res.json(resumes);
+    const userId=req.userId
+    const resumes = await Resume.find({user:userId});
+    res.status(200).json(resumes);
   } catch (error) {
     next(error);
   }
@@ -49,7 +50,7 @@ export const getResumeById = async (req: Request, res: Response, next: NextFunct
   try {
     const resume = await Resume.findById(req.params.id);
     if (!resume) return res.status(404).json({ message: "Resume not found" });
-    res.json(resume);
+    res.status(200).json(resume);
   } catch (error) {
     next(error);
   }
@@ -59,7 +60,7 @@ export const updateResume = async (req: Request, res: Response, next: NextFuncti
   try {
     const resume = await Resume.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!resume) return res.status(404).json({ message: "Resume not found" });
-    res.json(resume);
+    res.status(201).json(resume);
   } catch (error) {
     next(error);
   }
@@ -67,9 +68,15 @@ export const updateResume = async (req: Request, res: Response, next: NextFuncti
 
 export const deleteResume = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const bucketName = Deno.env.get("AWS_S3_BUCKET")!;
     const resume = await Resume.findByIdAndDelete(req.params.id);
+
+     
     if (!resume) return res.status(404).json({ message: "Resume not found" });
-    res.json({ message: "Resume deleted successfully" });
+    if(resume.url){
+      await deleteFromS3(bucketName,new URL(resume.url).pathname.substring(1))
+    }
+    res.status(201).json({ message: "Resume deleted successfully" });
   } catch (error) {
     next(error);
   }
